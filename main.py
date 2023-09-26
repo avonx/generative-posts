@@ -1,10 +1,21 @@
+import os
+from typing import Tuple, Union
+
 from generate_multimodal_post import generate_multimodal_post
 from generate_mockup import generate_instagram_mockup
 from utils import *
-import os
 
 
-def generate_situation(yaml_path):
+def generate_situation(yaml_path: str) -> str:
+    """
+    Generate a situation based on the person's information.
+
+    Args:
+    - yaml_path (str): Path to the yaml file containing the person's information.
+
+    Returns:
+    - str: Generated situation for the SNS post.
+    """
     person_info = load_setting_file(yaml_path)
 
     name = person_info["name"]
@@ -52,7 +63,20 @@ def generate_situation(yaml_path):
     return cleaned_response
 
 
-def generate_instagram_post(yaml_path, situation, save_dir=None):
+def generate_instagram_post(
+    yaml_path: str, situation: str, save_dir: Union[str, None] = None
+) -> Tuple:
+    """
+    Generate an Instagram post based on the person's information and situation.
+
+    Args:
+    - yaml_path (str): Path to the yaml file containing the person's information.
+    - situation (str): Generated situation for the Instagram post.
+    - save_dir (Union[str, None], optional): Directory to save the post mockup. Defaults to None.
+
+    Returns:
+    - Tuple: Instagram mockup, comment.
+    """
     # 'temp' フォルダとタイムスタンプの名前のサブフォルダが存在しない場合に作成
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
