@@ -91,5 +91,7 @@ if __name__=="__main__":
             for i in range(5):
                 # situation は設定ファイルを元にAIに考えさせる。
                 situation = generate_situation(yaml_path)
-                # 投稿の生成
-                _, _ = generate_instagram_post(yaml_path, situation, save_dir="./temp")
+                # situation = "夜に友達とラーメンを食べに行った"
+
+                # 投稿の生成（ファイルは tempフォルダと、outputフォルダに格納される）
+                generate_instagram_mockup, comment = generate_instagram_post(yaml_path, situation, save_dir="./temp")
