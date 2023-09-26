@@ -3,6 +3,7 @@ from generate_mockup import generate_instagram_mockup
 from utils import *
 import os
 
+
 def generate_situation(yaml_path):
     person_info = load_setting_file(yaml_path)
 
@@ -40,8 +41,16 @@ def generate_situation(yaml_path):
     temperature = 1
 
     response = get_openai_response(prompt, model, max_tokens, temperature)
-    cleaned_response = response.replace('<', '').replace('>', '').replace('"', '').replace("'", "").replace("「", "").replace("」", "")
+    cleaned_response = (
+        response.replace("<", "")
+        .replace(">", "")
+        .replace('"', "")
+        .replace("'", "")
+        .replace("「", "")
+        .replace("」", "")
+    )
     return cleaned_response
+
 
 def generate_instagram_post(yaml_path, situation, save_dir=None):
     # 'temp' フォルダとタイムスタンプの名前のサブフォルダが存在しない場合に作成
@@ -62,27 +71,37 @@ def generate_instagram_post(yaml_path, situation, save_dir=None):
     print(f"Situation: {situation}")
 
     # 対象人物の写真を取り込む
-    reference_image_path = f"./people/{os.path.basename(yaml_path).replace('.yaml', '.png')}"
+    reference_image_path = (
+        f"./people/{os.path.basename(yaml_path).replace('.yaml', '.png')}"
+    )
 
     # メインの処理
-    image, output_directory, image_path, comment = generate_multimodal_post(name, looks, characteristics, situation, reference_image_path, without_person=False)
+    image, output_directory, image_path, comment = generate_multimodal_post(
+        name,
+        looks,
+        characteristics,
+        situation,
+        reference_image_path,
+        without_person=False,
+    )
 
     # Instagramの投稿のモックアップにする
-    generated_mockup = generate_instagram_mockup(circle_image_path=reference_image_path,
-                                                rectangle_image_path=image_path,
-                                                name=name,
-                                                situation=situation,
-                                                comment=comment
-                                                )
+    generated_mockup = generate_instagram_mockup(
+        circle_image_path=reference_image_path,
+        rectangle_image_path=image_path,
+        name=name,
+        situation=situation,
+        comment=comment,
+    )
     # モックアップを保存
-    generated_mockup.save(f'{output_directory}/mockup.png')  # 保存
+    generated_mockup.save(f"{output_directory}/mockup.png")  # 保存
     if save_dir:
-        generated_mockup.save(f'{save_dir}/post_{name}_{situation}.png')  # 保存
+        generated_mockup.save(f"{save_dir}/post_{name}_{situation}.png")  # 保存
 
     return generate_instagram_mockup, comment
-    
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     # peopleディレクトリ内のすべての人物の投稿を5回ずつ生成
     directory_path = "./people"
     for filename in os.listdir(directory_path):
@@ -94,4 +113,6 @@ if __name__=="__main__":
                 # situation = "夜に友達とラーメンを食べに行った"
 
                 # 投稿の生成（ファイルは tempフォルダと、outputフォルダに格納される）
-                generate_instagram_mockup, comment = generate_instagram_post(yaml_path, situation, save_dir="./temp")
+                generate_instagram_mockup, comment = generate_instagram_post(
+                    yaml_path, situation, save_dir="./temp"
+                )
