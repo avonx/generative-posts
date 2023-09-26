@@ -83,7 +83,7 @@ def generate_instagram_post(yaml_path, situation, save_dir=None):
     
 
 if __name__=="__main__":
-    # peopleディレクトリ内のすべての芸能人に対してmain()関数を5回ずつ実行
+    # peopleディレクトリ内のすべての人物の投稿を5回ずつ生成
     directory_path = "./people"
     for filename in os.listdir(directory_path):
         if filename.endswith(".yaml"):
