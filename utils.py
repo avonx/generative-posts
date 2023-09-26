@@ -19,7 +19,8 @@ def generate_image(prompt, negative_prompt, reference_image):
     # 顔のリファレンス画像をバイナリ化
     buffered_reference = BytesIO()
     reference_image.save(buffered_reference, format="PNG")
-    img_str_reference = base64.b64encode(buffered_reference.getvalue()).decode()
+    img_str_reference = base64.b64encode(
+        buffered_reference.getvalue()).decode()
 
     # ReActor arguments:
     args = [
@@ -61,7 +62,8 @@ def generate_image(prompt, negative_prompt, reference_image):
         image = Image.open(io.BytesIO(base64.b64decode(i.split(",", 1)[0])))
 
         png_payload = {"image": "data:image/png;base64," + i}
-        response2 = requests.post(url=f"{url}/sdapi/v1/png-info", json=png_payload)
+        response2 = requests.post(
+            url=f"{url}/sdapi/v1/png-info", json=png_payload)
 
         pnginfo = PngImagePlugin.PngInfo()
         pnginfo.add_text("parameters", response2.json().get("info"))
@@ -75,7 +77,8 @@ def transform_image(input_image, reference_image):
 
     buffered_reference = BytesIO()
     reference_image.save(buffered_reference, format="PNG")
-    img_str_reference = base64.b64encode(buffered_reference.getvalue()).decode()
+    img_str_reference = base64.b64encode(
+        buffered_reference.getvalue()).decode()
 
     # input_imageのwidthとheightを取得
     width = input_image.width
@@ -146,7 +149,8 @@ def transform_image(input_image, reference_image):
     for i in r["images"]:  # ここの表現は将来バッチ処理を実装するときよう
         image = Image.open(io.BytesIO(base64.b64decode(i.split(",", 1)[0])))
         png_payload = {"image": "data:image/png;base64," + i}
-        response2 = requests.post(url=f"{url}/sdapi/v1/png-info", json=png_payload)
+        response2 = requests.post(
+            url=f"{url}/sdapi/v1/png-info", json=png_payload)
         pnginfo = PngImagePlugin.PngInfo()
         pnginfo.add_text("parameters", response2.json().get("info"))
         image.save("./output/generated_image.png", pnginfo=pnginfo)

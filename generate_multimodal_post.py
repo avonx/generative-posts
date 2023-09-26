@@ -128,7 +128,8 @@ def generate_multimodal_post(
     )
 
     # 外見、内面、状況などの情報をログに保存
-    append_to_log(log_file_path, "Looks", "\n".join([f"- {item}" for item in looks]))
+    append_to_log(log_file_path, "Looks", "\n".join(
+        [f"- {item}" for item in looks]))
     append_to_log(
         log_file_path,
         "Characteristics",
@@ -139,11 +140,14 @@ def generate_multimodal_post(
 
     # StableDiffusion用のプロンプトを整形する。
     prompt = "xxmixgirl, " + prompt_for_sd  # 今回使っているSDのモデルのトリガーワード。
-    negative_prompt = " (worst quality, low quality, illustration, 3d, 2d, painting, cartoons, sketch), tooth, open mouth, bad hand, bad fingers"  # 推奨ネガティブプロンプト
+    # 推奨ネガティブプロンプト
+    negative_prompt = " (worst quality, low quality, illustration, 3d, 2d, painting, cartoons, sketch), tooth, open mouth, bad hand, bad fingers"
 
     # StableDiffusionサーバーにリクエストを送り、画像生成
-    generated_image, pnginfo = generate_image(prompt, negative_prompt, reference_image)
-    generated_image.save(f"{output_directory}/output.png", pnginfo=pnginfo)  # 保存
+    generated_image, pnginfo = generate_image(
+        prompt, negative_prompt, reference_image)
+    generated_image.save(
+        f"{output_directory}/output.png", pnginfo=pnginfo)  # 保存
 
     # コメントを生成してみる。写真を選んだ後コメントに悩む感じをイメージしてデザイン。
     # comment = """お寺で疲れを癒してきました！座禅ってあんなにスッキルするんだね〜お勧めしてくれた方に感謝！ #座禅"""

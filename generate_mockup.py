@@ -1,3 +1,4 @@
+import re
 from PIL import Image, ImageDraw, ImageFont
 import unicodedata
 
@@ -8,7 +9,8 @@ def max_circular_crop(image):
     """
     size = min(image.size)
     offset = [(image.size[i] - size) // 2 for i in range(2)]
-    cropped = image.crop((offset[0], offset[1], offset[0] + size, offset[1] + size))
+    cropped = image.crop(
+        (offset[0], offset[1], offset[0] + size, offset[1] + size))
 
     mask = Image.new("L", (size, size), 0)
     draw = ImageDraw.Draw(mask)
@@ -34,9 +36,6 @@ def max_rectangular_crop(image, target_aspect_ratio):
         new_height = int(width / target_aspect_ratio)
         top = (height - new_height) // 2
         return image.crop((0, top, width, top + new_height))
-
-
-import re
 
 
 def split_emoji_from_text(text):
@@ -114,7 +113,8 @@ def draw_text(draw, position, text, font, emoji_font, max_width, fill=(255, 255,
 
 
 def place_text(
-    draw, textbox_position, textbox_size, text, font, emoji_font, fill=(255, 255, 255)
+    draw, textbox_position, textbox_size, text, font, emoji_font, fill=(
+        255, 255, 255)
 ):
     # テキストボックスの境界線を描画 (必要であれば)
     # draw.rectangle([textbox_position, (textbox_position[0] + textbox_size[0], textbox_position[1] + textbox_size[1])], outline=(255,0,0))
@@ -166,13 +166,15 @@ def generate_instagram_mockup(
     draw = ImageDraw.Draw(template_image)
 
     # フォントの読み込み
-    font = ImageFont.truetype("/Library/Fonts/Arial Unicode.ttf", 20)  # TODO ローカルパス
+    font = ImageFont.truetype(
+        "/Library/Fonts/Arial Unicode.ttf", 20)  # TODO ローカルパス
     emoji_font = ImageFont.truetype(
         "/System/Library/Fonts/Apple Color Emoji.ttc", 20
     )  # TODO ローカルパス
 
     # 名前を描画
-    place_text(draw, (345, 122), (300, 35), name, font, emoji_font, fill=(20, 20, 20))
+    place_text(draw, (345, 122), (300, 35), name,
+               font, emoji_font, fill=(20, 20, 20))
 
     # situationを描画
     place_text(
