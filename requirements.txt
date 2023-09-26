@@ -1,0 +1,6 @@
+openai
+Pillow
+requests
+pyyaml
+langchain
+python-dotenv

@@ -1,0 +1,10 @@
+input
+output
+venv
+flagged
+temp
+people_legacy
+dev
+.env
+.DS_Store
+*.pyc
